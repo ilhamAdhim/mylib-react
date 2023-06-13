@@ -1,35 +1,107 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./styles/stylePage.css";
+import "./styles/animation.css";
+import "./styles/buttons.css";
+import "./styles/modals.css";
+import "./styles/bookItem.css";
+import "./styles/form.css";
+
+import Searchbar from "./components/Searchbar";
+import Jumbotron from "./components/Jumbotron";
+import Footer from "./components/Footer";
+import { useEffect, useState } from "react";
+import { Booktype } from "./types/book";
+import Bookshelf from "./components/Bookshelf";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [dataBooks, setDataBooks] = useState<Booktype[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [filteredBooks, setFilteredBooks] = useState<Booktype[]>([]);
+  useEffect(() => {
+    setDataBooks([
+      {
+        id: 1634376225400,
+        title: "Harry Potter and the Philosopher's Stone",
+        author: "Ilham Rowling",
+        imageURL:
+          "https://images.moviesanywhere.com/143cdb987186a1c8f94d4f18de211216/fdea56fa-2703-47c1-8da8-70fc5382e1ea.jpg?h=375&resize=fit&w=250",
+        year: "2000",
+        isCompleted: true,
+      },
+      {
+        id: 1634391145501,
+        title: "Rich Dad Poor Dad",
+        author: "Robert Kiyosaki",
+        year: "2017",
+        imageURL:
+          "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg",
+        isCompleted: true,
+      },
+      {
+        id: 1634391847252,
+        title: "Atomic Habits",
+        author: "James Clear",
+        year: "2018",
+        imageURL:
+          "https://images.tokopedia.net/img/cache/700/VqbcmM/2021/6/6/5105a9a3-3e95-4639-ba4e-b7ca91db8f4f.jpg",
+        isCompleted: false,
+      },
+      {
+        id: 1634392008893,
+        title: "How to Win Friends and Influence People",
+        author: "Dale Carnegie",
+        year: "1936",
+        imageURL:
+          "https://miro.medium.com/max/644/1*2jWzEpx7pPLD4hTiXrGroQ.jpeg",
+        isCompleted: false,
+      },
+      {
+        id: 1634392102756,
+        title: "Future We Choose",
+        author: "Christiana Figueres",
+        year: "2020",
+        imageURL:
+          "https://images-na.ssl-images-amazon.com/images/I/4135O-8cnmL._SX329_BO1,204,203,200_.jpg",
+        isCompleted: true,
+      },
+      {
+        id: 1634392125165,
+        title: "Coba judul",
+        author: "Saya sendiri",
+        year: "2000",
+        imageURL: "",
+        isCompleted: false,
+      },
+    ]);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Jumbotron />
+      <Searchbar
+        dataBooks={dataBooks}
+        setIsSearching={setIsSearching}
+        setFilteredBooks={setFilteredBooks}
+      />
+      <section id="content">
+        <Bookshelf
+          category="bookList"
+          books={(isSearching ? filteredBooks : dataBooks).filter(
+            (item) => !item.isCompleted
+          )}
+          setDataBooks={setDataBooks}
+        />
+        <Bookshelf
+          category="bookFinished"
+          books={(isSearching ? filteredBooks : dataBooks).filter(
+            (item) => item.isCompleted
+          )}
+          setDataBooks={setDataBooks}
+        />
+      </section>
+      <br />
+      <Footer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
