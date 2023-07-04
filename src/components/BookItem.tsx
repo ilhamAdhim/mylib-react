@@ -2,20 +2,21 @@ import { FaTrashAlt, FaUndo } from "react-icons/fa";
 import { Booktype } from "../types/book";
 
 interface manageBookType {
-  setDataBooks: (item: any) => void;
+  handleDeleteBook: any;
+  handleMoveBookshelf: any;
 }
 
 function BookItem(props: manageBookType & Booktype) {
-  const { author, id, year, title, isCompleted, imageURL, setDataBooks } =
-    props;
-
-  const handleDeleteBooks = () => {
-    console.log("delete book");
-  };
-
-  const handleMove = (target: string) => {
-    console.log("move book to", target);
-  };
+  const {
+    author,
+    year,
+    id,
+    title,
+    isCompleted,
+    imageURL,
+    handleDeleteBook,
+    handleMoveBookshelf,
+  } = props;
 
   return (
     <div className="card_book">
@@ -29,15 +30,15 @@ function BookItem(props: manageBookType & Booktype) {
         <div className="book_year">{year}</div>
       </div>
       <div className="book_actions">
-        <button className="btn_delete" onClick={handleDeleteBooks}>
+        <button className="btn_delete" onClick={() => handleDeleteBook(id)}>
           <FaTrashAlt />
         </button>
         <button
           className="btn_done"
           onClick={
             isCompleted
-              ? () => handleMove("bookList")
-              : () => handleMove("finishedBooklist")
+              ? () => handleMoveBookshelf("bookList", id)
+              : () => handleMoveBookshelf("finishedBooklist", id)
           }
         >
           {!isCompleted ? "✔" : <FaUndo />}

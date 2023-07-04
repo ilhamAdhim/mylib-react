@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 
 interface ISearchBar {
   dataBooks: Booktype[];
-  setFilteredBooks: (prev: any) => void;
+  setFilteredBooks: (prev: Booktype[]) => void;
   setIsSearching: (prev: boolean) => void;
 }
 

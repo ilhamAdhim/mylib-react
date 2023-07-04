@@ -11,11 +11,29 @@ import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
 import { Booktype } from "./types/book";
 import Bookshelf from "./components/Bookshelf";
+import useDisclosure from "./hooks/useDisclosure";
+import ModalAddBook from "./components/Modals/ModalAddBook";
+import ModalValidation from "./components/Modals/ModalValidation";
 
 function App() {
+  const { isOpen, handleClose, handleOpen } = useDisclosure();
   const [dataBooks, setDataBooks] = useState<Booktype[]>([]);
+  const [activeModal, setActiveModal] = useState<"add" | "remove" | "">("");
   const [isSearching, setIsSearching] = useState(false);
   const [filteredBooks, setFilteredBooks] = useState<Booktype[]>([]);
+
+  const handleClearFinished = () => {
+    setDataBooks((prev: Booktype[]) =>
+      prev.filter((item) => !item.isCompleted)
+    );
+    handleClose();
+  };
+
+  const handleAddBook = (bookItem: Booktype) => {
+    setDataBooks((prev) => [...prev, bookItem]);
+    handleClose();
+  };
+
   useEffect(() => {
     setDataBooks([
       {
@@ -89,6 +107,8 @@ function App() {
             (item) => !item.isCompleted
           )}
           setDataBooks={setDataBooks}
+          setActiveModal={setActiveModal}
+          handleOpen={handleOpen}
         />
         <Bookshelf
           category="bookFinished"
@@ -96,9 +116,20 @@ function App() {
             (item) => item.isCompleted
           )}
           setDataBooks={setDataBooks}
+          setActiveModal={setActiveModal}
+          handleOpen={handleOpen}
         />
       </section>
       <br />
+      {isOpen && activeModal === "add" && (
+        <ModalAddBook onClose={handleClose} addBook={handleAddBook} />
+      )}
+      {isOpen && activeModal === "remove" && (
+        <ModalValidation
+          onClose={handleClose}
+          removeList={handleClearFinished}
+        />
+      )}
       <Footer />
     </>
   );
