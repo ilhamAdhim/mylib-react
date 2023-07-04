@@ -1,5 +1,5 @@
+import { Booktype } from "@/types/book";
 import { useState } from "react";
-import { Booktype } from "../../types/book";
 
 interface IModalAddBookProps {
   onClose: () => void;

@@ -1,9 +1,9 @@
+import { Booktype } from "@/types/book";
 import { FaTrashAlt, FaUndo } from "react-icons/fa";
-import { Booktype } from "../types/book";
 
 interface manageBookType {
-  handleDeleteBook: any;
-  handleMoveBookshelf: any;
+  handleDeleteBook: (idBook: number) => void;
+  handleMoveBookshelf: (target: string, idBook: number) => void;
 }
 
 function BookItem(props: manageBookType & Booktype) {

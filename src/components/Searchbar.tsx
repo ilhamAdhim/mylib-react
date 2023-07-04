@@ -1,5 +1,5 @@
+import { Booktype } from "@/types/book";
 import { ChangeEvent, useState } from "react";
-import { Booktype } from "../types/book";
 import { FaSearch } from "react-icons/fa";
 
 interface ISearchBar {

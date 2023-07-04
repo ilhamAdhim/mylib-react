@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Booktype } from "../types/book";
+import { Booktype } from "@/types/book";
 import BookItem from "./BookItem";
 
 interface IBookshelf {
