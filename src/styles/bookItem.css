@@ -15,6 +15,12 @@
   margin-bottom: 1em;
 }
 
+.title_book_related {
+  background-color: #fff;
+  margin: 25px 0px 25px 0px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px;
+}
+
 .no_data_image {
   margin-top: 15%;
   width: 300px;

@@ -2,11 +2,12 @@ import { Booktype } from "@/types/book";
 import BookItem from "./BookItem";
 
 interface IBookshelf {
-  category: "bookFinished" | "bookList";
+  category: "bookFinished" | "bookList" | "bookapi";
   books: Booktype[];
   setDataBooks: (prev: any) => void;
   setActiveModal: (prev: any) => void;
   handleOpen: () => void;
+  addBook: (bookItem: Booktype) => void;
 }
 
 function Bookshelf({
@@ -15,6 +16,7 @@ function Bookshelf({
   setDataBooks,
   setActiveModal,
   handleOpen,
+  addBook,
 }: IBookshelf) {
   const displayModalAddBook = () => {
     console.log("Book added");
@@ -44,26 +46,29 @@ function Bookshelf({
 
   return (
     <div id="card_bookshelves">
-      <div className="card_bookshelves_header">
-        <div className="book_category">
-          {category === "bookFinished" ? "Finished" : "Book List"}
+      {category !== "bookapi" && (
+        <div className="card_bookshelves_header">
+          <div className="book_category">
+            {category === "bookFinished" ? "Finished" : "Book List"}
+          </div>
+          <button
+            id="button_clear_finished"
+            className={
+              category === "bookFinished"
+                ? "button_card_header"
+                : "button_card_header_clear"
+            }
+            onClick={
+              category === "bookFinished"
+                ? () => displayModalClearFinished()
+                : () => displayModalAddBook()
+            }
+          >
+            <span>{category === "bookFinished" ? "Clear" : "Add Book"}</span>
+          </button>
         </div>
-        <button
-          id="button_clear_finished"
-          className={
-            category === "bookFinished"
-              ? "button_card_header"
-              : "button_card_header_clear"
-          }
-          onClick={
-            category === "bookFinished"
-              ? () => displayModalClearFinished()
-              : () => displayModalAddBook()
-          }
-        >
-          <span>{category === "bookFinished" ? "Clear" : "Add Book"}</span>
-        </button>
-      </div>
+      )}
+
       <div
         id={category === "bookFinished" ? "finished_book_list" : "book_list"}
       >
@@ -75,8 +80,10 @@ function Bookshelf({
               <BookItem
                 key={book.id}
                 {...book}
+                category={category}
                 handleDeleteBook={handleDeleteBook}
                 handleMoveBookshelf={handleMoveBookshelf}
+                handleAddBook={addBook}
               />
             ))}
           </>
