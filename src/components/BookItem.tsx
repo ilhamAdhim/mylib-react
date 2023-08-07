@@ -4,6 +4,8 @@ import { FaTrashAlt, FaUndo } from "react-icons/fa";
 interface manageBookType {
   handleDeleteBook: (idBook: number) => void;
   handleMoveBookshelf: (target: string, idBook: number) => void;
+  handleAddBook: (bookItem: Booktype) => void;
+  category: string;
 }
 
 function BookItem(props: manageBookType & Booktype) {
@@ -16,6 +18,8 @@ function BookItem(props: manageBookType & Booktype) {
     imageURL,
     handleDeleteBook,
     handleMoveBookshelf,
+    handleAddBook,
+    category,
   } = props;
 
   return (
@@ -30,16 +34,30 @@ function BookItem(props: manageBookType & Booktype) {
         <div className="book_year">{year}</div>
       </div>
       <div className="book_actions">
-        <button className="btn_delete" onClick={() => handleDeleteBook(id)}>
-          <FaTrashAlt />
-        </button>
+        {category !== "bookapi" && (
+          <button className="btn_delete" onClick={() => handleDeleteBook(id)}>
+            <FaTrashAlt />
+          </button>
+        )}
+
         <button
           className="btn_done"
-          onClick={
-            isCompleted
-              ? () => handleMoveBookshelf("bookList", id)
-              : () => handleMoveBookshelf("finishedBooklist", id)
-          }
+          onClick={() => {
+            if (category === "bookapi") {
+              handleAddBook({
+                year,
+                author,
+                imageURL,
+                isCompleted: false,
+                title: title,
+                id: id,
+              });
+            } else if (isCompleted) {
+              handleMoveBookshelf("bookList", id);
+            } else {
+              handleMoveBookshelf("finishedBooklist", id);
+            }
+          }}
         >
           {!isCompleted ? "✔" : <FaUndo />}
         </button>

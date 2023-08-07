@@ -18,6 +18,7 @@ import ModalValidation from "./components/Modals/ModalValidation";
 function App() {
   const { isOpen, handleClose, handleOpen } = useDisclosure();
   const [dataBooks, setDataBooks] = useState<Booktype[]>([]);
+  const [dataApi, setDataApi] = useState<Booktype[]>([]);
   const [activeModal, setActiveModal] = useState<"add" | "remove" | "">("");
   const [isSearching, setIsSearching] = useState(false);
   const [filteredBooks, setFilteredBooks] = useState<Booktype[]>([]);
@@ -92,6 +93,22 @@ function App() {
     ]);
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  async function fetchData() {
+    try {
+      const response = await fetch(
+        "https://64d06be2ff953154bb78e11f.mockapi.io/books"
+      );
+      const json = await response.json();
+      setDataApi(json);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
   return (
     <>
       <Jumbotron />
@@ -109,6 +126,7 @@ function App() {
           setDataBooks={setDataBooks}
           setActiveModal={setActiveModal}
           handleOpen={handleOpen}
+          addBook={handleAddBook}
         />
         <Bookshelf
           category="bookFinished"
@@ -118,7 +136,21 @@ function App() {
           setDataBooks={setDataBooks}
           setActiveModal={setActiveModal}
           handleOpen={handleOpen}
+          addBook={handleAddBook}
         />
+      </section>
+      <section>
+        <div className="title_book_related">
+          <h3 style={{ padding: "20px" }}>Books Related</h3>
+          <Bookshelf
+            category="bookapi"
+            books={dataApi}
+            setDataBooks={setDataBooks}
+            setActiveModal={setActiveModal}
+            handleOpen={handleOpen}
+            addBook={handleAddBook}
+          />
+        </div>
       </section>
       <br />
       {isOpen && activeModal === "add" && (
